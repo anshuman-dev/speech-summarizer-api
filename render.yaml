@@ -15,7 +15,8 @@ services:
       python -c "import nltk; nltk.download('punkt'); nltk.download('punkt_tab')"
 
     # Start command - run with gunicorn
-    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 2 --threads 2 --timeout 120 app:app
+    # Using 1 worker for free tier (512MB RAM limit)
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120 --log-level info app:app
 
     # Health check endpoint
     healthCheckPath: /health
@@ -26,6 +27,12 @@ services:
         value: 3.11
       - key: FLASK_ENV
         value: production
+      - key: PYTORCH_ENABLE_MPS_FALLBACK
+        value: "1"
+      - key: TOKENIZERS_PARALLELISM
+        value: "false"
+      - key: OMP_NUM_THREADS
+        value: "1"
 
     # Auto-deploy on push to main
     autoDeploy: true

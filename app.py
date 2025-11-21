@@ -9,6 +9,7 @@ from summarizer import ProductionSummarizer
 import time
 import logging
 import os
+import sys
 
 # Configure logging
 logging.basicConfig(
@@ -33,17 +34,25 @@ CORS(app, resources={
 # This improves performance and reduces memory usage
 logger.info("=" * 60)
 logger.info("Starting Speech Summarizer API")
+logger.info(f"Python: {sys.version.split()[0]}")
+logger.info(f"Working Directory: {os.getcwd()}")
 logger.info("=" * 60)
 
 try:
+    logger.info("Loading Sentence-BERT model (this may take 30-60 seconds)...")
+    import_start = time.time()
     summarizer = ProductionSummarizer()
     model_info = summarizer.get_model_info()
-    logger.info("✓ Summarizer loaded successfully")
+    import_time = time.time() - import_start
+    logger.info(f"✓ Summarizer loaded successfully in {import_time:.2f}s")
     logger.info(f"  Model: {model_info['model_name']}")
     logger.info(f"  Type: {model_info['type']}")
+    logger.info(f"  Embedding Dimension: {model_info['embedding_dimension']}")
+    logger.info("=" * 60)
+    logger.info("Flask application ready to accept requests")
     logger.info("=" * 60)
 except Exception as e:
-    logger.error(f"✗ Failed to load summarizer: {str(e)}")
+    logger.error(f"✗ Failed to load summarizer: {str(e)}", exc_info=True)
     raise
 
 
