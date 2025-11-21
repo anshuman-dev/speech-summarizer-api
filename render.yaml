@@ -1,0 +1,31 @@
+# Render.com deployment configuration
+# This file enables automatic deployment from GitHub
+
+services:
+  - type: web
+    name: speech-summarizer-api
+    env: python
+    region: oregon
+    plan: free  # Use 'starter' for paid plan ($7/month, always-on)
+
+    # Build command - install dependencies
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      python -c "import nltk; nltk.download('punkt'); nltk.download('punkt_tab')"
+
+    # Start command - run with gunicorn
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 2 --threads 2 --timeout 120 app:app
+
+    # Health check endpoint
+    healthCheckPath: /health
+
+    # Environment variables
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: FLASK_ENV
+        value: production
+
+    # Auto-deploy on push to main
+    autoDeploy: true

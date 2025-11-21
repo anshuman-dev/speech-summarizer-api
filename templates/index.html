@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Summarizer API - Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 Speech Summarizer API</h1>
+            <p class="subtitle">Fast text summarization using modern semantic understanding</p>
+            <div class="model-info">
+                <span class="badge">Sentence-BERT</span>
+                <span class="badge">Contextual Embeddings</span>
+                <span class="badge">~500ms Response</span>
+            </div>
+        </header>
+
+        <main>
+            <!-- Input Section -->
+            <section class="card">
+                <h2>Input Text</h2>
+                <textarea
+                    id="inputText"
+                    placeholder="Paste your text here (minimum 500 characters recommended)...
+
+Example: Artificial Intelligence has rapidly evolved over the past decade, transforming multiple sectors of human activity. From healthcare to finance, AI technologies are reshaping how we approach complex problems..."
+                    rows="12"
+                ></textarea>
+                <div class="text-info">
+                    <span id="charCount">0 characters</span>
+                    <span id="sentenceCount">0 sentences</span>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="card settings">
+                <h3>Settings</h3>
+                <div class="setting-group">
+                    <label for="summaryLength">
+                        Number of Sentences:
+                        <span id="summaryLengthValue">3</span>
+                    </label>
+                    <input
+                        type="range"
+                        id="summaryLength"
+                        min="1"
+                        max="10"
+                        value="3"
+                    >
+                </div>
+                <div class="setting-group">
+                    <label for="minTextLength">
+                        Minimum Text Length:
+                        <span id="minTextLengthValue">500</span> chars
+                    </label>
+                    <input
+                        type="range"
+                        id="minTextLength"
+                        min="100"
+                        max="2000"
+                        step="100"
+                        value="500"
+                    >
+                </div>
+            </section>
+
+            <!-- Action Button -->
+            <div class="action-section">
+                <button id="summarizeBtn" class="btn-primary">
+                    Generate Summary
+                </button>
+                <button id="clearBtn" class="btn-secondary">
+                    Clear
+                </button>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state" style="display: none;">
+                <div class="spinner"></div>
+                <p>Generating summary...</p>
+            </div>
+
+            <!-- Output Section -->
+            <section id="outputSection" class="card output-section" style="display: none;">
+                <h2>Summary</h2>
+                <div id="summaryText" class="summary-text"></div>
+                <div class="summary-stats">
+                    <div class="stat">
+                        <span class="stat-label">Original:</span>
+                        <span id="originalLength" class="stat-value">-</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Summary:</span>
+                        <span id="summaryLength" class="stat-value">-</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Compression:</span>
+                        <span id="compressionRatio" class="stat-value">-</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Processing Time:</span>
+                        <span id="processingTime" class="stat-value">-</span>
+                    </div>
+                </div>
+                <button id="copyBtn" class="btn-secondary">
+                    Copy Summary
+                </button>
+            </section>
+
+            <!-- Error Section -->
+            <div id="errorSection" class="error-section" style="display: none;">
+                <h3>❌ Error</h3>
+                <p id="errorMessage"></p>
+            </div>
+        </main>
+
+        <footer>
+            <div class="api-info">
+                <h3>API Endpoints</h3>
+                <div class="endpoint">
+                    <code>POST /summarize</code>
+                    <p>Main summarization endpoint</p>
+                </div>
+                <div class="endpoint">
+                    <code>GET /health</code>
+                    <p>Health check endpoint</p>
+                </div>
+                <div class="endpoint">
+                    <code>GET /model-info</code>
+                    <p>Model information</p>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <p>Built with Sentence-BERT • Open Source • Fast & Lightweight</p>
+                <p class="model-details" id="modelDetails">Loading model info...</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
