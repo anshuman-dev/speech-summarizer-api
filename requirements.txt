@@ -6,19 +6,18 @@ flask-cors==4.0.0
 gunicorn==21.2.0
 
 # Sentence Transformers for Modern Embeddings
-sentence-transformers==2.2.2
+sentence-transformers>=2.2.2
 
 # NLP and Text Processing
 nltk==3.8.1
 
 # Machine Learning and Math
-scikit-learn==1.3.2
-numpy==1.26.2
+scikit-learn>=1.3.2
+numpy>=1.24.0,<2.0.0
 
-# Dependencies (automatically installed with above, but pinned for stability)
-torch==2.1.0
-transformers==4.35.2
-tokenizers==0.15.0
+# PyTorch (let it auto-select compatible version)
+torch>=2.0.0
+transformers>=4.35.0
 
 # Optional but recommended for faster processing
 # Uncomment if deploying on a system with good CPU/RAM

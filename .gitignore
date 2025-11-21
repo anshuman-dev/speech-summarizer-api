@@ -95,3 +95,4 @@ tmp/
 temp/
 *.tmp
 /temp.txt
+/mcp_render.txt
