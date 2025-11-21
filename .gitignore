@@ -94,3 +94,4 @@ htmlcov/
 tmp/
 temp/
 *.tmp
+/temp.txt
